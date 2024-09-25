@@ -29,11 +29,13 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     }
 
 
-    private void createDefaultUserIfNotExits(){
-        Role userRole = roleRepository.findByName("ROLE_USER").get();
-        for (int i = 1; i<=5; i++){
-            String defaultEmail = "user"+i+"@email.com";
-            if (userRepository.existsByEmail(defaultEmail)){
+    private void createDefaultUserIfNotExits() {
+        Role userRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("ROLE_USER not found in the database"));
+
+        for (int i = 1; i <= 5; i++) {
+            String defaultEmail = "user" + i + "@email.com";
+            if (userRepository.existsByEmail(defaultEmail)) {
                 continue;
             }
             User user = new User();
@@ -46,7 +48,6 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
             System.out.println("Default vet user " + i + " created successfully.");
         }
     }
-
 
 
     private void createDefaultAdminIfNotExits(){
